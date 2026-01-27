@@ -129,7 +129,10 @@ export function AdminDashboard() {
             <h1 className="text-3xl font-bold">Admin Dashboard</h1>
             <p className="text-foreground/70 mt-1">Global command center for all tickets</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Link to="/admin/setup">
+              <Button>Setup</Button>
+            </Link>
             <Link to="/admin/apps">
               <Button variant="outline">App Registry</Button>
             </Link>

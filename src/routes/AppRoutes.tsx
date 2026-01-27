@@ -189,6 +189,20 @@ export const router = createBrowserRouter([
           };
         },
       },
+      {
+        path: 'admin/setup',
+        HydrateFallback: Loading,
+        lazy: async () => {
+          const { Setup } = await import('@screens/admin/Setup');
+          return {
+            Component: () => (
+              <ProtectedRoute requireAdmin>
+                <Setup />
+              </ProtectedRoute>
+            ),
+          };
+        },
+      },
     ],
   },
 ]);
