@@ -94,9 +94,10 @@ export function ReportBug() {
         timestamp: Timestamp.now(),
       });
 
-      // TODO: Send webhook notification for Critical/Blocker bugs
+      // TODO: Implement webhook notification for Critical/Blocker bugs
+      // This would integrate with Slack/Discord webhooks
       if (formData.priority === 'Blocker') {
-        console.log('Would send webhook notification for blocker bug');
+        console.log('Critical bug reported - webhook notification would be sent here');
       }
 
       navigate('/testing');

@@ -68,6 +68,7 @@ export async function seedSampleData() {
   }
 }
 
-// Uncomment and run this in browser console after signing in as admin
-// import { seedSampleData } from './lib/firebase/seedData';
-// seedSampleData().then(() => console.log('Done!'));
+// To use this in browser console after signing in as admin:
+// 1. Open browser console (F12)
+// 2. Import and run: 
+//    import('./lib/firebase/seedData').then(m => m.seedSampleData().then(() => console.log('Done!')));

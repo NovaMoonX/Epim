@@ -203,6 +203,20 @@ export const router = createBrowserRouter([
           };
         },
       },
+      {
+        path: 'admin/bulk-actions',
+        HydrateFallback: Loading,
+        lazy: async () => {
+          const { BulkActions } = await import('@screens/admin/BulkActions');
+          return {
+            Component: () => (
+              <ProtectedRoute requireAdmin>
+                <BulkActions />
+              </ProtectedRoute>
+            ),
+          };
+        },
+      },
     ],
   },
 ]);

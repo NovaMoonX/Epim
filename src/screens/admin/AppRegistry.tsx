@@ -78,7 +78,14 @@ export function AppRegistry() {
   };
 
   const generateApiKey = () => {
-    return 'app_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    // Use crypto for secure random key generation
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    const hex = Array.from(array)
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+    
+    return 'app_' + hex;
   };
 
   if (user?.email !== 'nova@moondreams.dev') {
