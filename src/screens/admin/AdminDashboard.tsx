@@ -193,17 +193,22 @@ export function AdminDashboard() {
             <Select
               value={filterType}
               onChange={(value) => setFilterType(value as typeof filterType)}
-            >
-              <Select.Option value="all">All Types</Select.Option>
-              <Select.Option value="customer">Customer Support</Select.Option>
-              <Select.Option value="internal">Internal Testing</Select.Option>
-            </Select>
-            <Select value={filterStatus} onChange={(value) => setFilterStatus(value)}>
-              <Select.Option value="all">All Statuses</Select.Option>
-              <Select.Option value="Open">Open</Select.Option>
-              <Select.Option value="Pending">Pending</Select.Option>
-              <Select.Option value="Resolved">Resolved</Select.Option>
-            </Select>
+              options={[
+                { value: 'all', text: 'All Types' },
+                { value: 'customer', text: 'Customer Support' },
+                { value: 'internal', text: 'Internal Testing' },
+              ]}
+            />
+            <Select
+              value={filterStatus}
+              onChange={(value) => setFilterStatus(value)}
+              options={[
+                { value: 'all', text: 'All Statuses' },
+                { value: 'Open', text: 'Open' },
+                { value: 'Pending', text: 'Pending' },
+                { value: 'Resolved', text: 'Resolved' },
+              ]}
+            />
           </div>
         </div>
 
@@ -280,7 +285,6 @@ export function AdminDashboard() {
                         </p>
                         <div className="flex flex-wrap gap-2">
                           <Badge
-                            variant="outline"
                             className={
                               ticket.type === 'customer'
                                 ? 'bg-blue-500/20'
@@ -295,9 +299,9 @@ export function AdminDashboard() {
                           <Badge className={getPriorityColor(ticket.priority)}>
                             {ticket.priority}
                           </Badge>
-                          <Badge variant="outline">{ticket.category}</Badge>
+                          <Badge>{ticket.category}</Badge>
                           {apps[ticket.appId] && (
-                            <Badge variant="outline">{apps[ticket.appId].name}</Badge>
+                            <Badge>{apps[ticket.appId].name}</Badge>
                           )}
                         </div>
                         <div className="mt-2 text-xs text-foreground/60">

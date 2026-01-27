@@ -123,9 +123,9 @@ export function MySupport() {
                       <Badge className={getPriorityColor(ticket.priority)}>
                         {ticket.priority}
                       </Badge>
-                      <Badge variant="outline">{ticket.category}</Badge>
+                      <Badge>{ticket.category}</Badge>
                       {apps[ticket.appId] && (
-                        <Badge variant="outline">{apps[ticket.appId].name}</Badge>
+                        <Badge>{apps[ticket.appId].name}</Badge>
                       )}
                     </div>
                   </div>

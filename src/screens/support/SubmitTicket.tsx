@@ -109,17 +109,17 @@ export function SubmitTicket() {
     );
   }
 
-  const appOptions = apps.map((app) => ({ value: app.id, label: app.name }));
+  const appOptions = apps.map((app) => ({ value: app.id, text: app.name }));
   const categoryOptions = [
-    { value: 'Billing', label: 'Billing' },
-    { value: 'Bug', label: 'Bug' },
-    { value: 'Help', label: 'Help' },
+    { value: 'Billing', text: 'Billing' },
+    { value: 'Bug', text: 'Bug' },
+    { value: 'Help', text: 'Help' },
   ];
   const priorityOptions = [
-    { value: 'Low', label: 'Low' },
-    { value: 'Medium', label: 'Medium' },
-    { value: 'High', label: 'High' },
-    { value: 'Blocker', label: 'Blocker' },
+    { value: 'Low', text: 'Low' },
+    { value: 'Medium', text: 'Medium' },
+    { value: 'High', text: 'High' },
+    { value: 'Blocker', text: 'Blocker' },
   ];
 
   return (

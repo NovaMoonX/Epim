@@ -21,7 +21,6 @@ export function Analytics() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [apps, setApps] = useState<Record<string, App>>({});
   const [appStats, setAppStats] = useState<AppStats[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +38,6 @@ export function Analytics() {
       appsSnapshot.forEach((doc) => {
         appsMap[doc.id] = { id: doc.id, ...doc.data() } as App;
       });
-      setApps(appsMap);
 
       // Load tickets
       const ticketsSnapshot = await getDocs(collection(db, 'tickets'));
