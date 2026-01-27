@@ -74,8 +74,8 @@ export function KnowledgeBase() {
   }, {} as Record<string, FAQ[]>);
 
   const appOptions = [
-    { value: 'all', label: 'All Apps' },
-    ...apps.map((app) => ({ value: app.id, label: app.name })),
+    { value: 'all', text: 'All Apps' },
+    ...apps.map((app) => ({ value: app.id, text: app.name })),
   ];
 
   return (
@@ -112,33 +112,34 @@ export function KnowledgeBase() {
           </div>
         ) : (
           <div className="space-y-8">
-            {Object.entries(categorizedFaqs).map(([category, categoryFaqs]) => (
-              <div key={category}>
-                <h2 className="text-xl font-semibold mb-4">{category}</h2>
-                <Accordion type="single" collapsible className="space-y-2">
-                  {categoryFaqs.map((faq) => (
-                    <Accordion.Item key={faq.id} value={faq.id}>
-                      <Accordion.Trigger
-                        onClick={() => handleFaqView(faq.id)}
-                        className="text-left"
-                      >
-                        <div className="flex items-center justify-between w-full">
-                          <span>{faq.question}</span>
-                          <span className="text-xs text-foreground/50 ml-2">
-                            {faq.views} views
-                          </span>
-                        </div>
-                      </Accordion.Trigger>
-                      <Accordion.Content>
-                        <div className="pt-2 pb-4 text-foreground/80 whitespace-pre-wrap">
-                          {faq.answer}
-                        </div>
-                      </Accordion.Content>
-                    </Accordion.Item>
-                  ))}
-                </Accordion>
-              </div>
-            ))}
+            {Object.entries(categorizedFaqs).map(([category, categoryFaqs]) => {
+              const faqItems = categoryFaqs.map((faq) => ({
+                id: faq.id,
+                title: (
+                  <div
+                    className="flex items-center justify-between w-full"
+                    onClick={() => handleFaqView(faq.id)}
+                  >
+                    <span>{faq.question}</span>
+                    <span className="text-xs text-foreground/50 ml-2">
+                      {faq.views} views
+                    </span>
+                  </div>
+                ),
+                content: (
+                  <div className="pt-2 pb-4 text-foreground/80 whitespace-pre-wrap">
+                    {faq.answer}
+                  </div>
+                ),
+              }));
+
+              return (
+                <div key={category}>
+                  <h2 className="text-xl font-semibold mb-4">{category}</h2>
+                  <Accordion items={faqItems} className="space-y-2" />
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

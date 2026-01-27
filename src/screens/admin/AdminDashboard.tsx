@@ -2,15 +2,14 @@ import { useEffect, useState } from 'react';
 import { Button, Badge, Select, Input } from '@moondreamsdev/dreamer-ui/components';
 import { useAuth } from '@hooks/useAuth';
 import { db } from '@lib/firebase';
-import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
-import { Ticket, App, User } from '@lib/types';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { Ticket, App } from '@lib/types';
 import { Link } from 'react-router-dom';
 
 export function AdminDashboard() {
   const { user } = useAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [apps, setApps] = useState<Record<string, App>>({});
-  const [users, setUsers] = useState<Record<string, User>>({});
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<'all' | 'customer' | 'internal'>('all');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -32,14 +31,6 @@ export function AdminDashboard() {
         appsMap[doc.id] = { id: doc.id, ...doc.data() } as App;
       });
       setApps(appsMap);
-
-      // Load users
-      const usersSnapshot = await getDocs(collection(db, 'users'));
-      const usersMap: Record<string, User> = {};
-      usersSnapshot.forEach((doc) => {
-        usersMap[doc.id] = { id: doc.id, ...doc.data() } as User;
-      });
-      setUsers(usersMap);
 
       // Load all tickets
       const ticketsQuery = query(collection(db, 'tickets'), orderBy('createdAt', 'desc'));
