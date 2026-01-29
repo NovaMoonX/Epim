@@ -24,7 +24,7 @@ export function AuthButton() {
       setShowLogin(false);
       setEmail('');
       setPassword('');
-    } catch (error) {
+    } catch {
       addToast({ title: 'Login failed. Please check your credentials.', type: 'error' });
     } finally {
       setLoading(false);
@@ -35,7 +35,7 @@ export function AuthButton() {
     try {
       await signOut(auth);
       addToast({ title: 'Logged out successfully', type: 'success' });
-    } catch (error) {
+    } catch {
       addToast({ title: 'Logout failed', type: 'error' });
     }
   }

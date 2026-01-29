@@ -25,13 +25,14 @@ export function SubmitTicket() {
 
   useEffect(() => {
     loadApps();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function loadApps() {
     try {
       const data = await getApps();
       setApps(data);
-    } catch (error) {
+    } catch {
       addToast({ title: 'Failed to load apps', type: 'error' });
     } finally {
       setLoading(false);
@@ -69,7 +70,7 @@ export function SubmitTicket() {
         creatorEmail: '',
         followUp: false,
       });
-    } catch (error) {
+    } catch {
       addToast({ title: 'Failed to submit ticket', type: 'error' });
     } finally {
       setSubmitting(false);

@@ -20,6 +20,7 @@ export function AdminTickets() {
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedAppId]);
 
   async function loadData() {
@@ -30,7 +31,7 @@ export function AdminTickets() {
       ]);
       setTickets(ticketsData);
       setApps(appsData);
-    } catch (error) {
+    } catch {
       addToast({ title: 'Failed to load tickets', type: 'error' });
     } finally {
       setLoading(false);
@@ -42,7 +43,7 @@ export function AdminTickets() {
       await updateTicket(ticketId, { status: status as Ticket['status'] });
       addToast({ title: 'Ticket status updated', type: 'success' });
       loadData();
-    } catch (error) {
+    } catch {
       addToast({ title: 'Failed to update ticket', type: 'error' });
     }
   }
@@ -62,7 +63,7 @@ export function AdminTickets() {
           addToast({ title: 'Ticket deleted successfully', type: 'success' });
           loadData();
         }
-      } catch (error) {
+      } catch {
         addToast({ title: 'Failed to delete ticket', type: 'error' });
       }
     }

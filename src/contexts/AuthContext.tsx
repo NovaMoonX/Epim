@@ -1,5 +1,5 @@
 import { useState, useEffect, ReactNode } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@lib/firebase';
 import { AuthContext } from '@hooks/useAuth';
 
@@ -26,5 +26,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
-export { signInWithEmailAndPassword, signOut };
