@@ -1,14 +1,18 @@
 import { Button } from '@moondreamsdev/dreamer-ui/components';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
+import { EpimLogo } from '@components/EpimLogo';
 
 function About() {
 	return (
 		<div className='page p-6'>
 			<div className='max-w-4xl mx-auto space-y-8'>
 				<div className='text-center space-y-4'>
+					<div className="flex justify-center mb-4">
+						<EpimLogo className="size-16" />
+					</div>
 					<h1 className='text-4xl md:text-5xl font-bold'>
 						<span className="text-primary">About Epim</span>
-						<span className="text-foreground/60 text-2xl md:text-3xl block mt-2">Support Portal</span>
+						<span className="text-foreground/50 text-xl md:text-2xl block mt-2 font-normal">Support Portal</span>
 					</h1>
 					<p className='text-lg text-foreground/70'>
 						Your centralized hub for customer support and improvement tracking
@@ -26,28 +30,6 @@ function About() {
 						Whether you're reporting a bug, requesting a feature, or seeking help, our platform 
 						ensures your voice is heard and your issues are tracked efficiently.
 					</p>
-				</Card>
-
-				<Card className="p-6 md:p-8">
-					<h2 className='text-2xl font-bold text-primary mb-4'>Key Features</h2>
-					<ul className='space-y-3 text-foreground/80'>
-						<li className='flex items-start gap-2'>
-							<span className="text-primary font-bold">•</span>
-							<span><strong>Easy Ticket Submission:</strong> Submit support tickets with detailed information and optional follow-up requests</span>
-						</li>
-						<li className='flex items-start gap-2'>
-							<span className="text-primary font-bold">•</span>
-							<span><strong>Multi-Project Support:</strong> Track issues across different applications and projects</span>
-						</li>
-						<li className='flex items-start gap-2'>
-							<span className="text-primary font-bold">•</span>
-							<span><strong>Real-time Updates:</strong> Get notified when your tickets are addressed</span>
-						</li>
-						<li className='flex items-start gap-2'>
-							<span className="text-primary font-bold">•</span>
-							<span><strong>Secure & Reliable:</strong> Built with Firebase for enterprise-grade security and scalability</span>
-						</li>
-					</ul>
 				</Card>
 
 				<Card className="p-6 md:p-8 bg-primary/5">

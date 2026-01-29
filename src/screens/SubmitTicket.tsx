@@ -9,6 +9,8 @@ import { Checkbox } from '@moondreamsdev/dreamer-ui/components';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 
+const SUPPORT_EMAIL = 'support@moondreams.dev';
+
 export function SubmitTicket() {
   const { addToast } = useToast();
   const [apps, setApps] = useState<App[]>([]);
@@ -36,6 +38,15 @@ export function SubmitTicket() {
       addToast({ title: 'Failed to load apps', type: 'error' });
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function copyEmailToClipboard() {
+    try {
+      await navigator.clipboard.writeText(SUPPORT_EMAIL);
+      addToast({ title: 'Email copied to clipboard!', type: 'success' });
+    } catch {
+      addToast({ title: 'Failed to copy email', type: 'error' });
     }
   }
 
@@ -187,10 +198,25 @@ export function SubmitTicket() {
         </Card>
 
         {apps.length === 0 && (
-          <Card className="p-6 text-center bg-warning/10">
-            <p className="text-foreground/70">
-              No apps available. Please contact support directly.
+          <Card className="p-6 text-center bg-primary/5 border-primary/20">
+            <h3 className="text-lg font-semibold text-foreground mb-3">
+              No apps available at the moment
+            </h3>
+            <p className="text-foreground/70 mb-4">
+              Please contact our support team directly for assistance:
             </p>
+            <div className="flex items-center justify-center gap-3">
+              <code className="px-4 py-2 bg-background border border-border rounded text-primary font-mono text-sm">
+                {SUPPORT_EMAIL}
+              </code>
+              <Button
+                onClick={copyEmailToClipboard}
+                variant="outline"
+                size="sm"
+              >
+                Copy
+              </Button>
+            </div>
           </Card>
         )}
       </div>

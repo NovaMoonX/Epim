@@ -7,6 +7,7 @@ import { Button } from '@moondreamsdev/dreamer-ui/components';
 import { Input } from '@moondreamsdev/dreamer-ui/components';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
+import { EpimLogo } from '@components/EpimLogo';
 
 export function AdminLogin() {
 	const { isAdmin, loading } = useAuth();
@@ -49,9 +50,12 @@ export function AdminLogin() {
 		<div className="page flex items-center justify-center p-6">
 			<Card className="w-full max-w-md p-8">
 				<div className="text-center mb-6">
+					<div className="flex justify-center mb-4">
+						<EpimLogo className="size-12" />
+					</div>
 					<h1 className="text-3xl font-bold mb-2">
 						<span className="text-primary">Epim</span>
-						<span className="text-foreground/60 text-xl block mt-1">Admin Portal</span>
+						<span className="text-foreground/50 text-lg block mt-1 font-normal">Admin Portal</span>
 					</h1>
 					<p className="text-foreground/70">Sign in to access the admin dashboard</p>
 				</div>
