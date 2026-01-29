@@ -49,11 +49,16 @@ export function SubmitTicket() {
 
     const selectedApp = apps.find((app) => app.id === formData.appId);
 
+    if (!selectedApp) {
+      addToast({ title: 'Selected app not found', type: 'error' });
+      return;
+    }
+
     setSubmitting(true);
     try {
       await createTicket({
         appId: formData.appId,
-        appName: selectedApp?.name || '',
+        appName: selectedApp.name,
         subject: formData.subject,
         description: formData.description,
         creatorEmail: formData.creatorEmail,

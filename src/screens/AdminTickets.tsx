@@ -39,6 +39,13 @@ export function AdminTickets() {
   }
 
   async function handleStatusChange(ticketId: string, status: string) {
+    // Validate status value
+    const validStatuses = ['open', 'in-progress', 'resolved'];
+    if (!validStatuses.includes(status)) {
+      addToast({ title: 'Invalid status value', type: 'error' });
+      return;
+    }
+
     try {
       await updateTicket(ticketId, { status: status as Ticket['status'] });
       addToast({ title: 'Ticket status updated', type: 'success' });
