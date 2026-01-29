@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@hooks/useAuthHook';
 import { getApps, createApp, updateApp, deleteApp } from '@lib/firebase';
 import type { App } from '@lib/firebase';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
@@ -10,7 +9,6 @@ import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 import { useActionModal } from '@moondreamsdev/dreamer-ui/hooks';
 
 export function AdminApps() {
-  const { isAdmin } = useAuth();
   const { addToast } = useToast();
   const { confirm } = useActionModal();
   const [apps, setApps] = useState<App[]>([]);
@@ -91,17 +89,6 @@ export function AdminApps() {
     setShowModal(false);
     setAppName('');
     setEditingApp(null);
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="page flex items-center justify-center">
-        <Card className="p-8 text-center">
-          <h2 className="text-2xl font-bold text-destructive mb-2">Access Denied</h2>
-          <p className="text-foreground/70">You must be an admin to access this page.</p>
-        </Card>
-      </div>
-    );
   }
 
   if (loading) {

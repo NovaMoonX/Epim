@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@hooks/useAuthHook';
 import { getTickets, getApps, deleteTicket, updateTicket } from '@lib/firebase';
 import type { Ticket, App } from '@lib/firebase';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
@@ -10,7 +9,6 @@ import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 import { useActionModal } from '@moondreamsdev/dreamer-ui/hooks';
 
 export function AdminTickets() {
-  const { isAdmin } = useAuth();
   const { addToast } = useToast();
   const { confirm } = useActionModal();
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -74,17 +72,6 @@ export function AdminTickets() {
         addToast({ title: 'Failed to delete ticket', type: 'error' });
       }
     }
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="page flex items-center justify-center">
-        <Card className="p-8 text-center">
-          <h2 className="text-2xl font-bold text-destructive mb-2">Access Denied</h2>
-          <p className="text-foreground/70">You must be an admin to access this page.</p>
-        </Card>
-      </div>
-    );
   }
 
   if (loading) {
