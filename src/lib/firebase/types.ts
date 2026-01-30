@@ -14,7 +14,7 @@ export interface Ticket {
   category: TicketCategory;
   subject: string;
   description: string;
-  creatorName: string;
+  creatorName?: string;
   creatorEmail: string;
   followUp: boolean;
   createdAt?: Date;
