@@ -72,9 +72,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // Global 404 catch-all
-  {
-    path: '*',
-    element: <NotFound />,
-  },
 ]);

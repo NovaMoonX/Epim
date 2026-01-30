@@ -16,7 +16,7 @@ function Layout() {
 								<span className="text-foreground/50 text-xs font-medium">Support Portal</span>
 							</div>
 						</Link>
-						<nav className="flex gap-4 sm:gap-6">
+						<nav aria-label="Primary navigation" className="flex gap-4 sm:gap-6">
 							<Link to="/" className={join(
 								"text-foreground/70 hover:text-foreground transition-colors",
 								"text-sm sm:text-base"

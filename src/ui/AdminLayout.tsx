@@ -39,7 +39,7 @@ export function AdminLayout() {
 									<span className="text-foreground/50 text-xs font-medium">Admin Portal</span>
 								</div>
 							</Link>
-							<nav className="flex gap-4">
+							<nav aria-label="Admin navigation" className="flex gap-4">
 								<Link to="/admin/products" className="text-foreground/70 hover:text-foreground">
 									Products
 								</Link>
