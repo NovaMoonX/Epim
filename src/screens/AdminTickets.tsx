@@ -153,7 +153,8 @@ export function AdminTickets() {
 
                     <div className="flex gap-4 text-sm text-foreground/60">
                       <span>Product: {ticket.productName || 'Unknown'}</span>
-                      <span>From: {ticket.creatorEmail}</span>
+                      <span>From: {ticket.creatorName || ticket.creatorEmail}</span>
+                      <span>Email: {ticket.creatorEmail}</span>
                       <span>Created: {createdDate}</span>
                     </div>
                   </div>

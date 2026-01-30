@@ -29,6 +29,7 @@ export function SubmitTicket() {
     category: '' as TicketCategory | '',
     subject: '',
     description: '',
+    creatorName: '',
     creatorEmail: '',
     followUp: false,
   });
@@ -86,6 +87,7 @@ export function SubmitTicket() {
         category: formData.category as TicketCategory,
         subject: formData.subject,
         description: formData.description,
+        creatorName: formData.creatorName,
         creatorEmail: formData.creatorEmail,
         followUp: formData.followUp,
       });
@@ -98,6 +100,7 @@ export function SubmitTicket() {
         category: '',
         subject: '',
         description: '',
+        creatorName: '',
         creatorEmail: '',
         followUp: false,
       });
@@ -182,6 +185,19 @@ export function SubmitTicket() {
 
             <div>
               <label className="block text-sm font-medium mb-2">
+                Your Name <span className="text-destructive">*</span>
+              </label>
+              <Input
+                type="text"
+                value={formData.creatorName}
+                onChange={(e) => setFormData({ ...formData, creatorName: e.target.value })}
+                placeholder="What should we call you?"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
                 Your Email <span className="text-destructive">*</span>
               </label>
               <Input
@@ -211,6 +227,7 @@ export function SubmitTicket() {
                     category: '',
                     subject: '',
                     description: '',
+                    creatorName: '',
                     creatorEmail: '',
                     followUp: false,
                   })
