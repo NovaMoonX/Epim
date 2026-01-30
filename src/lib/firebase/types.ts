@@ -1,14 +1,17 @@
 // Firestore document types
-export interface App {
+export interface Product {
   id?: string;
   name: string;
   createdAt?: Date;
 }
 
+export type TicketCategory = 'general-question' | 'bug' | 'feature-request' | 'financial';
+
 export interface Ticket {
   id?: string;
-  appId: string;
-  appName?: string;
+  productId: string;
+  productName?: string;
+  category: TicketCategory;
   subject: string;
   description: string;
   creatorEmail: string;

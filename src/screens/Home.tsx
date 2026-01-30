@@ -14,9 +14,9 @@ function Home() {
 					<span className="text-foreground/50 text-2xl md:text-3xl block mt-2 font-normal">Support Portal</span>
 				</h1>
 				<p className='text-lg md:text-xl text-foreground/80'>{APP_DESCRIPTION}</p>
-				<div className="flex gap-4 justify-center">
-					<Button href='/submit-ticket' size="lg">Submit a Ticket</Button>
-					<Button href='/about' variant="outline" size="lg">Learn More</Button>
+				<div className="flex flex-col sm:flex-row gap-4 justify-center">
+					<Button href='/submit-ticket' size="lg" className="w-full sm:w-auto">Submit a Ticket</Button>
+					<Button href='/about' variant="outline" size="lg" className="w-full sm:w-auto">Learn More</Button>
 				</div>
 			</div>
 		</div>

@@ -7,16 +7,16 @@ export function AdminDashboard() {
 			<div className="max-w-4xl mx-auto space-y-6">
 				<div className="text-center space-y-2">
 					<h1 className="text-4xl font-bold text-primary">Admin Dashboard</h1>
-					<p className="text-foreground/70">Manage apps and support tickets</p>
+					<p className="text-foreground/70">Manage products and support tickets</p>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<Card className="p-6">
-						<h2 className="text-2xl font-bold mb-3">App Management</h2>
+						<h2 className="text-2xl font-bold mb-3">Product Management</h2>
 						<p className="text-foreground/70 mb-4">
-							Create, edit, and manage applications that users can submit tickets for.
+							Create, edit, and manage products that users can submit tickets for.
 						</p>
-						<Button href="/admin/apps">Manage Apps</Button>
+						<Button href="/admin/products">Manage Products</Button>
 					</Card>
 
 					<Card className="p-6">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getTickets, getApps, deleteTicket, updateTicket } from '@lib/firebase';
-import type { Ticket, App } from '@lib/firebase';
+import { getTickets, getProducts, deleteTicket, updateTicket } from '@lib/firebase';
+import type { Ticket, Product } from '@lib/firebase';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
 import { Select } from '@moondreamsdev/dreamer-ui/components';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
@@ -8,27 +8,34 @@ import { Badge } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 import { useActionModal } from '@moondreamsdev/dreamer-ui/hooks';
 
+const CATEGORY_LABELS: Record<string, string> = {
+  'general-question': 'General Question',
+  'bug': 'Bug / Broken',
+  'feature-request': 'Feature Request',
+  'financial': 'Financial',
+};
+
 export function AdminTickets() {
   const { addToast } = useToast();
   const { confirm } = useActionModal();
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [apps, setApps] = useState<App[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedAppId, setSelectedAppId] = useState<string>('');
+  const [selectedProductId, setSelectedProductId] = useState<string>('');
 
   useEffect(() => {
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedAppId]);
+  }, [selectedProductId]);
 
   async function loadData() {
     try {
-      const [ticketsData, appsData] = await Promise.all([
-        getTickets(selectedAppId || undefined),
-        getApps(),
+      const [ticketsData, productsData] = await Promise.all([
+        getTickets(selectedProductId || undefined),
+        getProducts(),
       ]);
       setTickets(ticketsData);
-      setApps(appsData);
+      setProducts(productsData);
     } catch {
       addToast({ title: 'Failed to load tickets', type: 'error' });
     } finally {
@@ -82,9 +89,9 @@ export function AdminTickets() {
     );
   }
 
-  const appOptions = [
-    { text: 'All Apps', value: '' },
-    ...apps.map((app) => ({ text: app.name, value: app.id || '' })),
+  const productOptions = [
+    { text: 'All Products', value: '' },
+    ...products.map((product) => ({ text: product.name, value: product.id || '' })),
   ];
 
   return (
@@ -95,12 +102,12 @@ export function AdminTickets() {
         </div>
 
         <div className="flex gap-4 items-center">
-          <label className="text-sm font-medium">Filter by App:</label>
+          <label className="text-sm font-medium">Filter by Product:</label>
           <Select
-            value={selectedAppId}
-            onChange={(value: string) => setSelectedAppId(value)}
-            options={appOptions}
-            placeholder="All Apps"
+            value={selectedProductId}
+            onChange={(value: string) => setSelectedProductId(value)}
+            options={productOptions}
+            placeholder="All Products"
             className="w-64"
           />
         </div>
@@ -121,8 +128,11 @@ export function AdminTickets() {
               <Card key={ticket.id} className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="text-lg font-semibold">{ticket.subject}</h3>
+                      <Badge variant="secondary">
+                        {CATEGORY_LABELS[ticket.category] || ticket.category}
+                      </Badge>
                       {ticket.followUp && (
                         <Badge variant="accent">Follow-up Requested</Badge>
                       )}
@@ -142,7 +152,7 @@ export function AdminTickets() {
                     <p className="text-foreground/80">{ticket.description}</p>
 
                     <div className="flex gap-4 text-sm text-foreground/60">
-                      <span>App: {ticket.appName || 'Unknown'}</span>
+                      <span>Product: {ticket.productName || 'Unknown'}</span>
                       <span>From: {ticket.creatorEmail}</span>
                       <span>Created: {createdDate}</span>
                     </div>
@@ -172,7 +182,7 @@ export function AdminTickets() {
         {tickets.length === 0 && (
           <Card className="p-8 text-center">
             <p className="text-foreground/70">
-              {selectedAppId ? 'No tickets for this app.' : 'No tickets submitted yet.'}
+              {selectedProductId ? 'No tickets for this product.' : 'No tickets submitted yet.'}
             </p>
           </Card>
         )}

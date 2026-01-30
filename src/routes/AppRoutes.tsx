@@ -5,7 +5,7 @@ import Layout from '@ui/Layout';
 import { AdminLayout } from '@ui/AdminLayout';
 import Loading from '@ui/Loading';
 import { SubmitTicket } from '@screens/SubmitTicket';
-import { AdminApps } from '@screens/AdminApps';
+import { AdminProducts } from '@screens/AdminProducts';
 import { AdminTickets } from '@screens/AdminTickets';
 import { AdminLogin } from '@screens/AdminLogin';
 import { AdminDashboard } from '@screens/AdminDashboard';
@@ -50,8 +50,8 @@ export const router = createBrowserRouter([
             element: <AdminDashboard />,
           },
           {
-            path: 'apps',
-            element: <AdminApps />,
+            path: 'products',
+            element: <AdminProducts />,
           },
           {
             path: 'tickets',

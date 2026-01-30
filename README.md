@@ -6,7 +6,7 @@ A centralized support ticket system for managing customer support and tracking i
 
 - 🎫 **Public Ticket Submission**: Guests can submit support tickets without authentication
 - 🔐 **Hidden Admin Portal**: Secure admin-only access via `/admin` route
-- 📊 **App Management**: Organize tickets by application/project
+- 📊 **Product Management**: Organize tickets by product/project
 - 🎯 **Ticket Tracking**: Track ticket status (Open, In Progress, Resolved)
 - 📧 **Follow-up Requests**: Optional follow-up flag for tickets requiring responses
 - 🎨 **Modern UI**: Clean, responsive interface with Dreamer UI components
@@ -23,12 +23,12 @@ A centralized support ticket system for managing customer support and tracking i
 
 ### Guest (Unauthenticated)
 - Submit support tickets via public form
-- View list of available apps
+- View list of available products
 - No account required
 
 ### Admin (nova@moondreams.dev)
-- Manage applications (Create, Edit, Delete)
-- View all tickets with filtering by app
+- Manage products (Create, Edit, Delete)
+- View all tickets with filtering by product
 - Update ticket status
 - Delete tickets
 - Access via hidden `/admin` route
@@ -111,7 +111,7 @@ firebase deploy
 1. Visit the homepage
 2. Click "Submit a Ticket"
 3. Fill out the form:
-   - Select an app from the dropdown
+   - Select a product from the dropdown
    - Enter subject and description
    - Provide your email
    - Optionally request a follow-up
@@ -122,14 +122,14 @@ firebase deploy
 1. Navigate to `/admin` (hidden from public interface)
 2. Sign in with admin credentials (`nova@moondreams.dev`)
 3. Access admin dashboard with two main sections:
-   - **Apps**: Create, edit, and delete applications
+   - **Apps**: Create, edit, and delete products
    - **Tickets**: View, filter, update status, and delete tickets
 
 ## Firestore Schema
 
 ### Apps Collection
 ```typescript
-interface App {
+interface Product {
   id?: string;
   name: string;
   createdAt?: Date;
@@ -140,8 +140,8 @@ interface App {
 ```typescript
 interface Ticket {
   id?: string;
-  appId: string;
-  appName?: string;
+  productId: string;
+  productName?: string;
   subject: string;
   description: string;
   creatorEmail: string;
@@ -156,8 +156,8 @@ interface Ticket {
 The included `firestore.rules` ensures:
 
 **Apps Collection**:
-- Anyone can read apps (for ticket submission dropdown)
-- Only admin (`nova@moondreams.dev`) can create, update, or delete apps
+- Anyone can read products (for ticket submission dropdown)
+- Only admin (`nova@moondreams.dev`) can create, update, or delete products
 
 **Tickets Collection**:
 - Anyone can create tickets (public submission)

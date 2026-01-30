@@ -40,8 +40,8 @@ export function AdminLayout() {
 								</div>
 							</Link>
 							<nav className="flex gap-4">
-								<Link to="/admin/apps" className="text-foreground/70 hover:text-foreground">
-									Apps
+								<Link to="/admin/products" className="text-foreground/70 hover:text-foreground">
+									Products
 								</Link>
 								<Link to="/admin/tickets" className="text-foreground/70 hover:text-foreground">
 									Tickets

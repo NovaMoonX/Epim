@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getApps, createTicket } from '@lib/firebase';
-import type { App } from '@lib/firebase';
+import { getProducts, createTicket } from '@lib/firebase';
+import type { Product, TicketCategory } from '@lib/firebase';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
 import { Input } from '@moondreamsdev/dreamer-ui/components';
 import { Textarea } from '@moondreamsdev/dreamer-ui/components';
@@ -11,14 +11,22 @@ import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 
 const SUPPORT_EMAIL = 'support@moondreams.dev';
 
+const CATEGORY_OPTIONS = [
+  { text: 'General Question', value: 'general-question' },
+  { text: 'Bug / Broken', value: 'bug' },
+  { text: 'Feature Request', value: 'feature-request' },
+  { text: 'Financial', value: 'financial' },
+];
+
 export function SubmitTicket() {
   const { addToast } = useToast();
-  const [apps, setApps] = useState<App[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
-    appId: '',
+    productId: '',
+    category: '' as TicketCategory | '',
     subject: '',
     description: '',
     creatorEmail: '',
@@ -26,16 +34,16 @@ export function SubmitTicket() {
   });
 
   useEffect(() => {
-    loadApps();
+    loadProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function loadApps() {
+  async function loadProducts() {
     try {
-      const data = await getApps();
-      setApps(data);
+      const data = await getProducts();
+      setProducts(data);
     } catch {
-      addToast({ title: 'Failed to load apps', type: 'error' });
+      addToast({ title: 'Failed to load products', type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -53,23 +61,29 @@ export function SubmitTicket() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!formData.appId) {
-      addToast({ title: 'Please select an app', type: 'warning' });
+    if (!formData.productId) {
+      addToast({ title: 'Please select a product', type: 'warning' });
       return;
     }
 
-    const selectedApp = apps.find((app) => app.id === formData.appId);
+    if (!formData.category) {
+      addToast({ title: 'Please select a category', type: 'warning' });
+      return;
+    }
 
-    if (!selectedApp) {
-      addToast({ title: 'Selected app not found', type: 'error' });
+    const selectedProduct = products.find((product) => product.id === formData.productId);
+
+    if (!selectedProduct) {
+      addToast({ title: 'Selected product not found', type: 'error' });
       return;
     }
 
     setSubmitting(true);
     try {
       await createTicket({
-        appId: formData.appId,
-        appName: selectedApp.name,
+        productId: formData.productId,
+        productName: selectedProduct.name,
+        category: formData.category as TicketCategory,
         subject: formData.subject,
         description: formData.description,
         creatorEmail: formData.creatorEmail,
@@ -80,7 +94,8 @@ export function SubmitTicket() {
 
       // Reset form
       setFormData({
-        appId: '',
+        productId: '',
+        category: '',
         subject: '',
         description: '',
         creatorEmail: '',
@@ -101,7 +116,7 @@ export function SubmitTicket() {
     );
   }
 
-  const appOptions = apps.map((app) => ({ text: app.name, value: app.id || '' }));
+  const productOptions = products.map((product) => ({ text: product.name, value: product.id || '' }));
 
   return (
     <div className="page p-6">
@@ -117,13 +132,25 @@ export function SubmitTicket() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-2">
-                App <span className="text-destructive">*</span>
+                Product <span className="text-destructive">*</span>
               </label>
               <Select
-                value={formData.appId}
-                onChange={(value: string) => setFormData({ ...formData, appId: value })}
-                options={appOptions}
-                placeholder="Select an app"
+                value={formData.productId}
+                onChange={(value: string) => setFormData({ ...formData, productId: value })}
+                options={productOptions}
+                placeholder="Select a product"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Category <span className="text-destructive">*</span>
+              </label>
+              <Select
+                value={formData.category}
+                onChange={(value: string) => setFormData({ ...formData, category: value as TicketCategory })}
+                options={CATEGORY_OPTIONS}
+                placeholder="Select a category"
               />
             </div>
 
@@ -180,7 +207,8 @@ export function SubmitTicket() {
                 variant="outline"
                 onClick={() =>
                   setFormData({
-                    appId: '',
+                    productId: '',
+                    category: '',
                     subject: '',
                     description: '',
                     creatorEmail: '',
@@ -197,10 +225,10 @@ export function SubmitTicket() {
           </form>
         </Card>
 
-        {apps.length === 0 && (
+        {products.length === 0 && (
           <Card className="p-6 text-center bg-primary/5 border-primary/20">
             <h3 className="text-lg font-semibold text-foreground mb-3">
-              No apps available at the moment
+              No products available at the moment
             </h3>
             <p className="text-foreground/70 mb-4">
               Please contact our support team directly for assistance:

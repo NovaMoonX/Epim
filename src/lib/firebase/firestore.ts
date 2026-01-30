@@ -14,10 +14,10 @@ import {
   QueryConstraint,
 } from 'firebase/firestore';
 import { db } from './config';
-import type { App, Ticket } from './types';
+import type { Product, Ticket } from './types';
 
 // Collection names
-const APPS_COLLECTION = 'apps';
+const PRODUCTS_COLLECTION = 'products';
 const TICKETS_COLLECTION = 'tickets';
 
 // Helper to convert Firestore timestamp to Date
@@ -30,19 +30,19 @@ function convertTimestamp(data: DocumentData) {
   return result;
 }
 
-// ==================== APPS ====================
+// ==================== PRODUCTS ====================
 
-export async function createApp(app: Omit<App, 'id' | 'createdAt'>) {
-  const docRef = await addDoc(collection(db, APPS_COLLECTION), {
-    ...app,
+export async function createProduct(product: Omit<Product, 'id' | 'createdAt'>) {
+  const docRef = await addDoc(collection(db, PRODUCTS_COLLECTION), {
+    ...product,
     createdAt: Timestamp.now(),
   });
   
   return docRef.id;
 }
 
-export async function getApps(): Promise<App[]> {
-  const q = query(collection(db, APPS_COLLECTION), orderBy('name'));
+export async function getProducts(): Promise<Product[]> {
+  const q = query(collection(db, PRODUCTS_COLLECTION), orderBy('name'));
   const querySnapshot = await getDocs(q);
   
   return querySnapshot.docs.map((doc) => {
@@ -50,12 +50,12 @@ export async function getApps(): Promise<App[]> {
     return {
       id: doc.id,
       ...data,
-    } as App;
+    } as Product;
   });
 }
 
-export async function getApp(id: string): Promise<App | null> {
-  const docRef = doc(db, APPS_COLLECTION, id);
+export async function getProduct(id: string): Promise<Product | null> {
+  const docRef = doc(db, PRODUCTS_COLLECTION, id);
   const docSnap = await getDoc(docRef);
   
   if (docSnap.exists()) {
@@ -63,19 +63,19 @@ export async function getApp(id: string): Promise<App | null> {
     return {
       id: docSnap.id,
       ...data,
-    } as App;
+    } as Product;
   }
   
   return null;
 }
 
-export async function updateApp(id: string, app: Partial<App>) {
-  const docRef = doc(db, APPS_COLLECTION, id);
-  await updateDoc(docRef, app);
+export async function updateProduct(id: string, product: Partial<Product>) {
+  const docRef = doc(db, PRODUCTS_COLLECTION, id);
+  await updateDoc(docRef, product);
 }
 
-export async function deleteApp(id: string) {
-  const docRef = doc(db, APPS_COLLECTION, id);
+export async function deleteProduct(id: string) {
+  const docRef = doc(db, PRODUCTS_COLLECTION, id);
   await deleteDoc(docRef);
 }
 
@@ -91,11 +91,11 @@ export async function createTicket(ticket: Omit<Ticket, 'id' | 'createdAt'>) {
   return docRef.id;
 }
 
-export async function getTickets(appId?: string): Promise<Ticket[]> {
+export async function getTickets(productId?: string): Promise<Ticket[]> {
   const constraints: QueryConstraint[] = [orderBy('createdAt', 'desc')];
   
-  if (appId) {
-    constraints.unshift(where('appId', '==', appId));
+  if (productId) {
+    constraints.unshift(where('productId', '==', productId));
   }
   
   const q = query(collection(db, TICKETS_COLLECTION), ...constraints);

@@ -7,12 +7,12 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email == 'nova@moondreams.dev';
     }
 
-    // Apps collection
-    match /apps/{app} {
-      // Anyone can read apps (for the dropdown in the public form)
+    // Products collection
+    match /products/{product} {
+      // Anyone can read products (for the dropdown in the public form)
       allow read: if true;
       
-      // Only admin can create, update, or delete apps
+      // Only admin can create, update, or delete products
       allow write: if isAdmin();
     }
 
