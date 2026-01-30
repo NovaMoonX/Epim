@@ -25,3 +25,12 @@
   --color-tooltip: var(--color-gray-800);
   --color-tooltip-foreground: var(--color-white);
 }
+
+/* Dark theme overrides */
+.dark {
+  --color-muted: var(--color-slate-800);
+  --color-muted-foreground: var(--color-slate-400);
+  --color-border: var(--color-slate-700);
+  --color-popover: var(--color-slate-800);
+  --color-popover-foreground: var(--color-slate-100);
+}

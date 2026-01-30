@@ -9,6 +9,7 @@ import { AdminProducts } from '@screens/AdminProducts';
 import { AdminTickets } from '@screens/AdminTickets';
 import { AdminLogin } from '@screens/AdminLogin';
 import { AdminDashboard } from '@screens/AdminDashboard';
+import { NotFound } from '@screens/NotFound';
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ export const router = createBrowserRouter([
           const { default: About } = await import('@screens/About');
           return { Component: About };
         },
+      },
+      // 404 catch-all for public routes
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },
@@ -57,8 +63,18 @@ export const router = createBrowserRouter([
             path: 'tickets',
             element: <AdminTickets />,
           },
+          // 404 catch-all for admin routes
+          {
+            path: '*',
+            element: <NotFound />,
+          },
         ],
       },
     ],
+  },
+  // Global 404 catch-all
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
