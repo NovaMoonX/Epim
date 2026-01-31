@@ -2,10 +2,15 @@
 
 ## Core Development Rules
 
-### 1. Component Creation
+### 1. Code Formatting
+- **Use 2 spaces for indentation** (NOT 4 spaces or tabs)
+- This applies to all TypeScript/JavaScript, JSON, and configuration files
+- Ensure consistent indentation throughout the codebase
+
+### 2. Component Creation
 - Use `export function ComponentName` syntax (NOT `React.FC` or arrow functions)
 
-### 2. Return Value Debugging
+### 3. Return Value Debugging
 - Always store return values in variables before returning them for easier debugging
 - This applies to all callbacks, computed values, and complex expressions
 
@@ -30,7 +35,7 @@ const answeredCount = useMemo(() => {
 }, [allQuestions, selectedApartment, getAnswer]);
 ```
 
-### 3. Styling & Class Names
+### 4. Styling & Class Names
 - Use TailwindCSS exclusively
 - **ALWAYS** use `join` from `@moondreamsdev/dreamer-ui/utils` for conditional class names
 - **NEVER** use template literals with `${` for className - always use `join()` instead
@@ -68,12 +73,12 @@ className={join('base-class', condition && 'conditional-class')}
 className={join('base-class', isActive ? 'active' : 'inactive')}
 ```
 
-### 4. Component Library Priority
+### 5. Component Library Priority
 - Always check Dreamer UI first before creating custom components
 - Import from `@moondreamsdev/dreamer-ui/components`, `/hooks`, `/symbols`, `/utils`
 - Always check existing props of Dream UI components before setting custom styles
 
-### 5. File Structure
+### 6. File Structure
 Follow the existing structure:
 ```
 src/
@@ -89,7 +94,7 @@ src/
 ├── utils/      # Utility functions
 ```
 
-### 6. Import Patterns
+### 7. Import Patterns
 ```tsx
 // Dreamer UI imports
 import { Button } from '@moondreamsdev/dreamer-ui/components';
@@ -108,7 +113,7 @@ import { store } from '@store';
 import { helper } from '@utils/helper';
 ```
 
-### 7. Available Import Aliases
+### 8. Available Import Aliases
 - `@/` → `src/`
 - `@components/` → `src/components/`
 - `@contexts/` → `src/contexts/`
@@ -122,6 +127,7 @@ import { helper } from '@utils/helper';
 - `@utils/` → `src/utils/`
 
 ## Quick Reference
+- **Indentation: 2 spaces (NOT 4 spaces or tabs)**
 - Component syntax: `export function ComponentName`
 - **Class names: ALWAYS use `join()` for conditionals - NEVER template literals**
 - Check Dreamer UI first
@@ -129,6 +135,7 @@ import { helper } from '@utils/helper';
 - Follow structured folder organization with proper separation of concerns
 
 ## ⚠️ Critical Reminders
+- **Use 2 spaces for indentation throughout the entire codebase**
 - **Template literals with `${` in className are FORBIDDEN**
 - **Always import and use `join` from `@moondreamsdev/dreamer-ui/utils`**
 - **Before writing any conditional className, ask: "Am I using join()?"**

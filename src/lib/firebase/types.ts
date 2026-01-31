@@ -1,8 +1,10 @@
 // Firestore document types
 export interface Product {
-  id?: string;
+  id: string;
   name: string;
-  createdAt?: Date;
+  shortDescription?: string;
+  siteUrl?: string;
+  addedAt: number; // timestamp in milliseconds
 }
 
 export type TicketCategory = 'general-question' | 'bug' | 'feature-request' | 'financial';
@@ -10,13 +12,12 @@ export type TicketCategory = 'general-question' | 'bug' | 'feature-request' | 'f
 export interface Ticket {
   id?: string;
   productId: string;
-  productName?: string;
   category: TicketCategory;
   subject: string;
   description: string;
   creatorName?: string;
   creatorEmail: string;
   followUp: boolean;
-  createdAt?: Date;
+  createdAt: number; // timestamp in milliseconds
   status?: 'open' | 'in-progress' | 'resolved';
 }

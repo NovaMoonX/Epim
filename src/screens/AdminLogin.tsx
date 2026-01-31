@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@lib/firebase';
-import { useAuth } from '@hooks/useAuthHook';
+import { useAuth } from '@hooks/useAuth';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
 import { Input } from '@moondreamsdev/dreamer-ui/components';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
@@ -85,8 +85,8 @@ export function AdminLogin() {
 						/>
 					</div>
 
-					<Button type="submit" className="w-full" disabled={submitting}>
-						{submitting ? 'Signing in...' : 'Sign In'}
+					<Button type="submit" className="w-full" loading={submitting}>
+						Sign In
 					</Button>
 				</form>
 

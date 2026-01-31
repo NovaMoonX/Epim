@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '@lib/firebase';
-import { useAuth } from '@hooks/useAuthHook';
+import { useAuth } from '@hooks/useAuth';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
 import { Input } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
@@ -72,8 +72,8 @@ export function AuthButton() {
           required
           className="w-32"
         />
-        <Button type="submit" size="sm" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
+        <Button type="submit" size="sm" loading={loading}>
+          Login
         </Button>
         <Button type="button" variant="outline" size="sm" onClick={() => setShowLogin(false)}>
           Cancel

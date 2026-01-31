@@ -9,7 +9,6 @@ import {
   query,
   orderBy,
   where,
-  Timestamp,
   DocumentData,
   QueryConstraint,
 } from 'firebase/firestore';
@@ -20,11 +19,18 @@ import type { Product, Ticket } from './types';
 const PRODUCTS_COLLECTION = 'products';
 const TICKETS_COLLECTION = 'tickets';
 
-// Helper to convert Firestore timestamp to Date
+// Helper to convert timestamps
 function convertTimestamp(data: DocumentData) {
   const result = { ...data };
-  if (result.createdAt instanceof Timestamp) {
-    result.createdAt = result.createdAt.toDate();
+  
+  // Convert addedAt if it's a Firestore Timestamp
+  if (result.addedAt && typeof result.addedAt.toMillis === 'function') {
+    result.addedAt = result.addedAt.toMillis();
+  }
+  
+  // Convert createdAt if it's a Firestore Timestamp
+  if (result.createdAt && typeof result.createdAt.toMillis === 'function') {
+    result.createdAt = result.createdAt.toMillis();
   }
   
   return result;
@@ -32,10 +38,10 @@ function convertTimestamp(data: DocumentData) {
 
 // ==================== PRODUCTS ====================
 
-export async function createProduct(product: Omit<Product, 'id' | 'createdAt'>) {
+export async function createProduct(product: Omit<Product, 'id' | 'addedAt'>) {
   const docRef = await addDoc(collection(db, PRODUCTS_COLLECTION), {
     ...product,
-    createdAt: Timestamp.now(),
+    addedAt: Date.now(),
   });
   
   return docRef.id;
@@ -85,7 +91,7 @@ export async function createTicket(ticket: Omit<Ticket, 'id' | 'createdAt'>) {
   const docRef = await addDoc(collection(db, TICKETS_COLLECTION), {
     ...ticket,
     status: 'open',
-    createdAt: Timestamp.now(),
+    createdAt: Date.now(),
   });
   
   return docRef.id;

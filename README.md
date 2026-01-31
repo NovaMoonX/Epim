@@ -127,12 +127,14 @@ firebase deploy
 
 ## Firestore Schema
 
-### Apps Collection
+### Products Collection
 ```typescript
 interface Product {
-  id?: string;
+  id: string;
   name: string;
-  createdAt?: Date;
+  shortDescription?: string;
+  siteUrl?: string;
+  addedAt: number; // timestamp in milliseconds
 }
 ```
 
@@ -141,13 +143,14 @@ interface Product {
 interface Ticket {
   id?: string;
   productId: string;
-  productName?: string;
+  category: TicketCategory;
   subject: string;
   description: string;
+  creatorName?: string;
   creatorEmail: string;
   followUp: boolean;
+  createdAt: number; // timestamp in milliseconds
   status?: 'open' | 'in-progress' | 'resolved';
-  createdAt?: Date;
 }
 ```
 

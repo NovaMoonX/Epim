@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getProducts, createTicket } from '@lib/firebase';
 import type { Product, TicketCategory } from '@lib/firebase';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
@@ -18,28 +18,25 @@ const CATEGORY_OPTIONS = [
   { text: 'Financial', value: 'financial' },
 ];
 
+const INITIAL_FORM_DATA = {
+  productId: '',
+  category: '' as TicketCategory | '',
+  subject: '',
+  description: '',
+  creatorName: '',
+  creatorEmail: '',
+  followUp: false,
+};
+
 export function SubmitTicket() {
   const { addToast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const [formData, setFormData] = useState({
-    productId: '',
-    category: '' as TicketCategory | '',
-    subject: '',
-    description: '',
-    creatorName: '',
-    creatorEmail: '',
-    followUp: false,
-  });
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
-  useEffect(() => {
-    loadProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  async function loadProducts() {
+  const loadProducts = useCallback(async () => {
     try {
       const data = await getProducts();
       setProducts(data);
@@ -48,7 +45,15 @@ export function SubmitTicket() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [addToast]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  const resetFormData = useCallback(() => {
+    setFormData(INITIAL_FORM_DATA);
+  }, []);
 
   async function copyEmailToClipboard() {
     try {
@@ -83,7 +88,6 @@ export function SubmitTicket() {
     try {
       await createTicket({
         productId: formData.productId,
-        productName: selectedProduct.name,
         category: formData.category as TicketCategory,
         subject: formData.subject,
         description: formData.description,
@@ -93,17 +97,7 @@ export function SubmitTicket() {
       });
 
       addToast({ title: 'Ticket submitted successfully!', type: 'success' });
-
-      // Reset form
-      setFormData({
-        productId: '',
-        category: '',
-        subject: '',
-        description: '',
-        creatorName: '',
-        creatorEmail: '',
-        followUp: false,
-      });
+      resetFormData();
     } catch {
       addToast({ title: 'Failed to submit ticket', type: 'error' });
     } finally {

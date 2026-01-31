@@ -1,5 +1,5 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@hooks/useAuthHook';
+import { useAuth } from '@hooks/useAuth';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
 import { signOut } from 'firebase/auth';
 import { auth } from '@lib/firebase';

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getProducts, createProduct, updateProduct, deleteProduct } from '@lib/firebase';
 import type { Product } from '@lib/firebase';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
@@ -17,12 +17,7 @@ export function AdminProducts() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [productName, setProductName] = useState('');
 
-  useEffect(() => {
-    loadProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  async function loadProducts() {
+  const loadProducts = useCallback(async () => {
     try {
       const data = await getProducts();
       setProducts(data);
@@ -31,7 +26,11 @@ export function AdminProducts() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [addToast]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

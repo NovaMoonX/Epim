@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getTickets, getProducts, deleteTicket, updateTicket } from '@lib/firebase';
 import type { Ticket, Product } from '@lib/firebase';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
@@ -23,12 +23,7 @@ export function AdminTickets() {
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState<string>('');
 
-  useEffect(() => {
-    loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProductId]);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     try {
       const [ticketsData, productsData] = await Promise.all([
         getTickets(selectedProductId || undefined),
@@ -41,7 +36,11 @@ export function AdminTickets() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [selectedProductId, addToast]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   async function handleStatusChange(ticketId: string, status: string) {
     // Validate status value
