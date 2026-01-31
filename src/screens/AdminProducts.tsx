@@ -63,10 +63,15 @@ export function AdminProducts() {
       colSpan: 'full',
       isValid: (value) => {
         const trimmed = value.trim();
-        return {
-          valid: trimmed.length > 0,
-          message: trimmed.length > 0 ? undefined : 'Product name is required',
-        };
+        
+        if (trimmed.length === 0) {
+          return {
+            valid: false,
+            message: 'Product name is required',
+          };
+        }
+        
+        return { valid: true };
       },
     }),
     FormFactories.textarea({
@@ -251,6 +256,7 @@ export function AdminProducts() {
             {editingProduct ? 'Edit Product' : 'Create Product'}
           </h2>
           <Form
+            key={editingProduct?.id || 'new'}
             form={formFields}
             initialData={formData}
             onDataChange={setFormData}
