@@ -4,7 +4,6 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-  deleteField,
 } from '@lib/firebase';
 import type { Product } from '@lib/firebase';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
@@ -93,40 +92,17 @@ export function AdminProducts() {
       const trimmedDescription = data.shortDescription?.trim() || '';
       const trimmedUrl = data.siteUrl?.trim() || '';
       
+      const productData: Partial<Product> = {
+        name: data.name,
+        // Set to null if empty, otherwise use the trimmed value
+        shortDescription: trimmedDescription || null,
+        siteUrl: trimmedUrl || null,
+      };
+      
       if (editingProduct?.id) {
-        // For updates, we need to handle field deletion explicitly
-        const productData: Record<string, string | ReturnType<typeof deleteField>> = {
-          name: data.name,
-        };
-        
-        // Set field value or delete it if empty
-        if (trimmedDescription) {
-          productData.shortDescription = trimmedDescription;
-        } else {
-          productData.shortDescription = deleteField();
-        }
-        
-        if (trimmedUrl) {
-          productData.siteUrl = trimmedUrl;
-        } else {
-          productData.siteUrl = deleteField();
-        }
-        
         await updateProduct(editingProduct.id, productData);
         addToast({ title: 'Product updated successfully', type: 'success' });
       } else {
-        // For creation, only include fields that have values
-        const productData: Partial<Product> = {
-          name: data.name,
-        };
-        
-        if (trimmedDescription) {
-          productData.shortDescription = trimmedDescription;
-        }
-        if (trimmedUrl) {
-          productData.siteUrl = trimmedUrl;
-        }
-        
         await createProduct(productData as Omit<Product, 'id' | 'addedAt'>);
         addToast({ title: 'Product created successfully', type: 'success' });
       }

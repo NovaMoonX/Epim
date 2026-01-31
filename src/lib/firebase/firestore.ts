@@ -5,7 +5,6 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
-  deleteField,
   doc,
   query,
   orderBy,
@@ -141,6 +140,3 @@ export async function deleteTicket(id: string) {
   const docRef = doc(db, TICKETS_COLLECTION, id);
   await deleteDoc(docRef);
 }
-
-// Re-export deleteField for use in components
-export { deleteField };

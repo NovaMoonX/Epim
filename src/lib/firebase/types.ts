@@ -2,8 +2,8 @@
 export interface Product {
   id: string;
   name: string;
-  shortDescription?: string;
-  siteUrl?: string;
+  shortDescription?: string | null;
+  siteUrl?: string | null;
   addedAt: number; // timestamp in milliseconds
 }
 
