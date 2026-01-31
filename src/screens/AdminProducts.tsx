@@ -89,19 +89,26 @@ export function AdminProducts() {
 
   async function handleSubmit(data: ProductFormData) {
     try {
+      const trimmedDescription = data.shortDescription.trim();
+      const trimmedUrl = data.siteUrl.trim();
+      
+      const productData: Partial<Product> = {
+        name: data.name,
+      };
+      
+      // Only include optional fields if they have values
+      if (trimmedDescription) {
+        productData.shortDescription = trimmedDescription;
+      }
+      if (trimmedUrl) {
+        productData.siteUrl = trimmedUrl;
+      }
+      
       if (editingProduct?.id) {
-        await updateProduct(editingProduct.id, {
-          name: data.name,
-          shortDescription: data.shortDescription.trim() || undefined,
-          siteUrl: data.siteUrl.trim() || undefined,
-        });
+        await updateProduct(editingProduct.id, productData);
         addToast({ title: 'Product updated successfully', type: 'success' });
       } else {
-        await createProduct({
-          name: data.name,
-          shortDescription: data.shortDescription.trim() || undefined,
-          siteUrl: data.siteUrl.trim() || undefined,
-        });
+        await createProduct(productData as Omit<Product, 'id' | 'addedAt'>);
         addToast({ title: 'Product created successfully', type: 'success' });
       }
       setShowModal(false);
