@@ -158,7 +158,7 @@ interface Ticket {
 
 The included `firestore.rules` ensures:
 
-**Apps Collection**:
+**Products Collection**:
 - Anyone can read products (for ticket submission dropdown)
 - Only admin (`nova@moondreams.dev`) can create, update, or delete products
 
