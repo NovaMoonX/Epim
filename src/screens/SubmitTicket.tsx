@@ -232,17 +232,7 @@ export function SubmitTicket() {
               <Button
                 type='button'
                 variant='outline'
-                onClick={() =>
-                  setFormData({
-                    productId: '',
-                    category: '',
-                    subject: '',
-                    description: '',
-                    creatorName: '',
-                    creatorEmail: '',
-                    followUp: false,
-                  })
-                }
+                onClick={resetFormData}
               >
                 Clear
               </Button>
