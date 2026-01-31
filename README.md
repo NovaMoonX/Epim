@@ -177,8 +177,7 @@ src/
 ├── contexts/           # React context providers
 │   └── AuthContext.tsx # Authentication state management
 ├── hooks/              # Custom React hooks
-│   ├── useAuth.tsx     # Auth context definition
-│   └── useAuthHook.ts  # Auth hook for components
+│   └── useAuth.tsx     # Auth context definition
 ├── lib/
 │   ├── app/           # App constants
 │   └── firebase/      # Firebase configuration and utilities
