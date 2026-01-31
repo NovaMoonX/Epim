@@ -25,6 +25,20 @@ export function AdminProducts() {
   const [shortDescription, setShortDescription] = useState('');
   const [siteUrl, setSiteUrl] = useState('');
 
+  // Helper function to validate and sanitize URLs
+  function isValidUrl(url: string): boolean {
+    if (!url.trim()) return true; // Empty URLs are valid (optional field)
+    
+    try {
+      const urlObj = new URL(url);
+      // Only allow http and https protocols
+      const result = urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+      return result;
+    } catch {
+      return false;
+    }
+  }
+
   const loadProducts = useCallback(async () => {
     try {
       const data = await getProducts();
@@ -46,6 +60,15 @@ export function AdminProducts() {
 
     if (!productName.trim()) {
       addToast({ title: 'Product name is required', type: 'warning' });
+      return;
+    }
+
+    // Validate URL if provided
+    if (siteUrl.trim() && !isValidUrl(siteUrl)) {
+      addToast({ 
+        title: 'Please enter a valid HTTP or HTTPS URL',
+        type: 'warning' 
+      });
       return;
     }
 
@@ -155,6 +178,7 @@ export function AdminProducts() {
                     target='_blank'
                     rel='noopener noreferrer'
                     className='text-primary hover:underline mb-2 block text-sm'
+                    aria-label={`Visit ${product.name} website (opens in new tab)`}
                   >
                     {product.siteUrl}
                   </a>
