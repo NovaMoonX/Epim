@@ -40,7 +40,8 @@ export function SubmitTicket() {
     try {
       const data = await getProducts();
       setProducts(data);
-    } catch {
+    } catch (error) {
+      console.error('Error loading products:', error);
       addToast({ title: 'Failed to load products', type: 'error' });
     } finally {
       setLoading(false);
@@ -77,7 +78,9 @@ export function SubmitTicket() {
       return;
     }
 
-    const selectedProduct = products.find((product) => product.id === formData.productId);
+    const selectedProduct = products.find(
+      (product) => product.id === formData.productId,
+    );
 
     if (!selectedProduct) {
       addToast({ title: 'Selected product not found', type: 'error' });
@@ -107,114 +110,138 @@ export function SubmitTicket() {
 
   if (loading) {
     return (
-      <div className="page flex items-center justify-center">
-        <p className="text-foreground/70">Loading...</p>
+      <div className='page flex items-center justify-center'>
+        <p className='text-foreground/70'>Loading...</p>
       </div>
     );
   }
 
-  const productOptions = products.map((product) => ({ text: product.name, value: product.id || '' }));
+  const productOptions = products.map((product) => ({
+    text: product.name,
+    value: product.id || '',
+  }));
 
   return (
-    <div className="page p-6">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold text-primary">Submit a Support Ticket</h1>
-          <p className="text-foreground/70">
+    <div className='page p-6'>
+      <div className='mx-auto max-w-2xl space-y-6'>
+        <div className='space-y-2 text-center'>
+          <h1 className='text-primary text-4xl font-bold'>
+            Submit a Support Ticket
+          </h1>
+          <p className='text-foreground/70'>
             Need help? Fill out the form below and we'll get back to you.
           </p>
         </div>
 
-        <Card className="p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <Card className='p-6'>
+          <form onSubmit={handleSubmit} className='space-y-6'>
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Product <span className="text-destructive">*</span>
+              <label className='mb-2 block text-sm font-medium'>
+                Product <span className='text-destructive'>*</span>
               </label>
               <Select
                 value={formData.productId}
-                onChange={(value: string) => setFormData({ ...formData, productId: value })}
+                onChange={(value: string) =>
+                  setFormData({ ...formData, productId: value })
+                }
                 options={productOptions}
-                placeholder="Select a product"
+                placeholder='Select a product'
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Category <span className="text-destructive">*</span>
+              <label className='mb-2 block text-sm font-medium'>
+                Category <span className='text-destructive'>*</span>
               </label>
               <Select
                 value={formData.category}
-                onChange={(value: string) => setFormData({ ...formData, category: value as TicketCategory })}
+                onChange={(value: string) =>
+                  setFormData({
+                    ...formData,
+                    category: value as TicketCategory,
+                  })
+                }
                 options={CATEGORY_OPTIONS}
-                placeholder="Select a category"
+                placeholder='Select a category'
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Subject <span className="text-destructive">*</span>
+              <label className='mb-2 block text-sm font-medium'>
+                Subject <span className='text-destructive'>*</span>
               </label>
               <Input
-                type="text"
+                type='text'
                 value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                placeholder="Brief summary of your issue"
+                onChange={(e) =>
+                  setFormData({ ...formData, subject: e.target.value })
+                }
+                placeholder='Brief summary of your issue'
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Description <span className="text-destructive">*</span>
+              <label className='mb-2 block text-sm font-medium'>
+                Description <span className='text-destructive'>*</span>
               </label>
               <Textarea
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Provide detailed information about your issue"
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+                placeholder='Provide detailed information about your issue'
                 rows={6}
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Your Name <span className="text-destructive">*</span>
+              <label className='mb-2 block text-sm font-medium'>
+                Your Name <span className='text-destructive'>*</span>
               </label>
               <Input
-                type="text"
+                type='text'
                 value={formData.creatorName}
-                onChange={(e) => setFormData({ ...formData, creatorName: e.target.value })}
-                placeholder="What should we call you?"
+                onChange={(e) =>
+                  setFormData({ ...formData, creatorName: e.target.value })
+                }
+                placeholder='What should we call you?'
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Your Email <span className="text-destructive">*</span>
+              <label className='mb-2 block text-sm font-medium'>
+                Your Email <span className='text-destructive'>*</span>
               </label>
               <Input
-                type="email"
+                type='email'
                 value={formData.creatorEmail}
-                onChange={(e) => setFormData({ ...formData, creatorEmail: e.target.value })}
-                placeholder="your.email@example.com"
+                onChange={(e) =>
+                  setFormData({ ...formData, creatorEmail: e.target.value })
+                }
+                placeholder='your.email@example.com'
                 required
               />
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               <Checkbox
                 checked={formData.followUp}
-                onCheckedChange={(checked) => setFormData({ ...formData, followUp: checked === true })}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, followUp: checked === true })
+                }
               />
-              <label className="text-sm">I would like a follow-up on this ticket</label>
+              <label className='text-sm'>
+                I would like a follow-up on this ticket
+              </label>
             </div>
 
-            <div className="flex gap-2 justify-end">
+            <div className='flex justify-end gap-2'>
               <Button
-                type="button"
-                variant="outline"
+                type='button'
+                variant='outline'
                 onClick={() =>
                   setFormData({
                     productId: '',
@@ -229,7 +256,7 @@ export function SubmitTicket() {
               >
                 Clear
               </Button>
-              <Button type="submit" disabled={submitting}>
+              <Button type='submit' disabled={submitting}>
                 {submitting ? 'Submitting...' : 'Submit Ticket'}
               </Button>
             </div>
@@ -237,21 +264,21 @@ export function SubmitTicket() {
         </Card>
 
         {products.length === 0 && (
-          <Card className="p-6 text-center bg-primary/5 border-primary/20">
-            <h3 className="text-lg font-semibold text-foreground mb-3">
+          <Card className='bg-primary/5 border-primary/20 p-6 text-center'>
+            <h3 className='text-foreground mb-3 text-lg font-semibold'>
               No products available at the moment
             </h3>
-            <p className="text-foreground/70 mb-4">
+            <p className='text-foreground/70 mb-4'>
               Please contact our support team directly for assistance:
             </p>
-            <div className="flex items-center justify-center gap-3">
-              <code className="px-4 py-2 bg-background border border-border rounded text-primary font-mono text-sm">
+            <div className='flex items-center justify-center gap-3'>
+              <code className='bg-background border-border text-primary rounded border px-4 py-2 font-mono text-sm'>
                 {SUPPORT_EMAIL}
               </code>
               <Button
                 onClick={copyEmailToClipboard}
-                variant="outline"
-                size="sm"
+                variant='outline'
+                size='sm'
               >
                 Copy
               </Button>

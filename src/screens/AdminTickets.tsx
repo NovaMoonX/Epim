@@ -36,10 +36,10 @@ export function AdminTickets() {
       ]);
       setTickets(ticketsData);
       setProducts(productsData);
-      setLoading(false);
     } catch (error) {
       console.error('Error loading data:', error);
       addToast({ title: 'Failed to load data', type: 'error' });
+    } finally {
       setLoading(false);
     }
   }, [selectedProductId, addToast]);
