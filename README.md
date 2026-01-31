@@ -122,7 +122,7 @@ firebase deploy
 1. Navigate to `/admin` (hidden from public interface)
 2. Sign in with admin credentials (`nova@moondreams.dev`)
 3. Access admin dashboard with two main sections:
-   - **Apps**: Create, edit, and delete products
+   - **Products**: Create, edit, and delete products
    - **Tickets**: View, filter, update status, and delete tickets
 
 ## Firestore Schema
