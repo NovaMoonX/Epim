@@ -23,6 +23,11 @@ export function AdminTickets() {
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState<string>('');
 
+  const getProductName = useCallback((productId: string) => {
+    const product = products.find(p => p.id === productId);
+    return product?.name || 'Unknown';
+  }, [products]);
+
   const loadData = useCallback(async () => {
     try {
       const [ticketsData, productsData] = await Promise.all([
@@ -151,7 +156,7 @@ export function AdminTickets() {
                     <p className="text-foreground/80">{ticket.description}</p>
 
                     <div className="flex gap-4 text-sm text-foreground/60">
-                      <span>Product: {ticket.productName || 'Unknown'}</span>
+                      <span>Product: {getProductName(ticket.productId)}</span>
                       {ticket.creatorName ? (
                         <>
                           <span>From: {ticket.creatorName}</span>

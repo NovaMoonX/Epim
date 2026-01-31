@@ -108,7 +108,7 @@ export function AdminProducts() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {products.map((product) => {
-            const createdDate = product.createdAt ? new Date(product.createdAt).toLocaleDateString() : 'N/A';
+            const createdDate = product.addedAt ? new Date(product.addedAt).toLocaleDateString() : 'N/A';
             
             return (
               <Card key={product.id} className="p-4">
