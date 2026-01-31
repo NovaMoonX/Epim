@@ -14,6 +14,12 @@ import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 import { useActionModal } from '@moondreamsdev/dreamer-ui/hooks';
 import { validateUrl } from '@utils/validation';
 
+interface ProductFormData {
+  name: string;
+  shortDescription: string;
+  siteUrl: string;
+}
+
 export function AdminProducts() {
   const { addToast } = useToast();
   const { confirm } = useActionModal();
@@ -21,11 +27,7 @@ export function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [formData, setFormData] = useState<{
-    name: string;
-    shortDescription: string;
-    siteUrl: string;
-  }>({
+  const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     shortDescription: '',
     siteUrl: '',
@@ -85,7 +87,7 @@ export function AdminProducts() {
     loadProducts();
   }, [loadProducts]);
 
-  async function handleSubmit(data: typeof formData) {
+  async function handleSubmit(data: ProductFormData) {
     try {
       if (editingProduct?.id) {
         await updateProduct(editingProduct.id, {
@@ -233,7 +235,7 @@ export function AdminProducts() {
           <h2 className='text-2xl font-bold'>
             {editingProduct ? 'Edit Product' : 'Create Product'}
           </h2>
-          <Form
+          <Form<ProductFormData>
             form={formFields}
             initialData={formData}
             onDataChange={setFormData}
