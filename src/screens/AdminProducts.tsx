@@ -89,8 +89,8 @@ export function AdminProducts() {
 
   async function handleSubmit(data: ProductFormData) {
     try {
-      const trimmedDescription = data.shortDescription.trim();
-      const trimmedUrl = data.siteUrl.trim();
+      const trimmedDescription = data.shortDescription?.trim() || '';
+      const trimmedUrl = data.siteUrl?.trim() || '';
       
       const productData: Partial<Product> = {
         name: data.name,
