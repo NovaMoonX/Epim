@@ -193,7 +193,7 @@ src/
 │   ├── SubmitTicket.tsx   # Public ticket form
 │   ├── AdminLogin.tsx     # Admin login page
 │   ├── AdminDashboard.tsx # Admin overview
-│   ├── AdminApps.tsx      # App management
+│   ├── AdminProducts.tsx  # Product management
 │   └── AdminTickets.tsx   # Ticket management
 └── ui/                # Layout components
     ├── Layout.tsx         # Public layout
