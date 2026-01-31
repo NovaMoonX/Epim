@@ -166,7 +166,7 @@ The included `firestore.rules` ensures:
 - Anyone can create tickets (public submission)
 - Only admin can read, update, or delete tickets
 
-See `FIREBASE_SETUP.md` for detailed security configuration.
+For detailed security configuration, review the `firestore.rules` file included in the project.
 
 ## Project Structure
 
