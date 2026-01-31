@@ -14,6 +14,19 @@ import { Modal } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 import { useActionModal } from '@moondreamsdev/dreamer-ui/hooks';
 
+// Helper function to validate and sanitize URLs
+function isValidUrl(url: string): boolean {
+  if (!url.trim()) return true; // Empty URLs are valid (optional field)
+  
+  try {
+    const urlObj = new URL(url);
+    // Only allow http and https protocols
+    return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 export function AdminProducts() {
   const { addToast } = useToast();
   const { confirm } = useActionModal();
@@ -24,20 +37,6 @@ export function AdminProducts() {
   const [productName, setProductName] = useState('');
   const [shortDescription, setShortDescription] = useState('');
   const [siteUrl, setSiteUrl] = useState('');
-
-  // Helper function to validate and sanitize URLs
-  function isValidUrl(url: string): boolean {
-    if (!url.trim()) return true; // Empty URLs are valid (optional field)
-    
-    try {
-      const urlObj = new URL(url);
-      // Only allow http and https protocols
-      const result = urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
-      return result;
-    } catch {
-      return false;
-    }
-  }
 
   const loadProducts = useCallback(async () => {
     try {
@@ -178,7 +177,7 @@ export function AdminProducts() {
                     target='_blank'
                     rel='noopener noreferrer'
                     className='text-primary hover:underline mb-2 block text-sm'
-                    aria-label={`Visit ${product.name} website (opens in new tab)`}
+                    aria-label={`Visit ${product.name} website`}
                   >
                     {product.siteUrl}
                   </a>
