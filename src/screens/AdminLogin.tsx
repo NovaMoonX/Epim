@@ -19,7 +19,7 @@ export function AdminLogin() {
 
 	useEffect(() => {
 		if (!loading && isAdmin) {
-			navigate('/admin/apps', { replace: true });
+			navigate('/admin/products', { replace: true });
 		}
 	}, [isAdmin, loading, navigate]);
 
@@ -30,7 +30,7 @@ export function AdminLogin() {
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
 			addToast({ title: 'Logged in successfully', type: 'success' });
-			navigate('/admin/apps');
+			navigate('/admin/products');
 		} catch {
 			addToast({ title: 'Login failed. Please check your credentials.', type: 'error' });
 		} finally {

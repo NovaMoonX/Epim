@@ -21,9 +21,10 @@ export function AdminProducts() {
     try {
       const data = await getProducts();
       setProducts(data);
-    } catch {
+      setLoading(false);
+    } catch (error) {
+      console.error('Error loading products:', error);
       addToast({ title: 'Failed to load products', type: 'error' });
-    } finally {
       setLoading(false);
     }
   }, [addToast]);
