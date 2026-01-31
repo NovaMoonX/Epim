@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getTickets, getProducts, deleteTicket, updateTicket } from '@lib/firebase';
 import type { Ticket, Product } from '@lib/firebase';
-import { Card } from '@moondreamsdev/dreamer-ui/components';
-import { Select } from '@moondreamsdev/dreamer-ui/components';
-import { Button } from '@moondreamsdev/dreamer-ui/components';
-import { Badge } from '@moondreamsdev/dreamer-ui/components';
+import { Card, Select, Button, Badge, Label } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 import { useActionModal } from '@moondreamsdev/dreamer-ui/hooks';
 
@@ -107,7 +104,7 @@ export function AdminTickets() {
         </div>
 
         <div className="flex gap-4 items-center">
-          <label className="text-sm font-medium">Filter by Product:</label>
+          <Label>Filter by Product:</Label>
           <Select
             value={selectedProductId}
             onChange={(value: string) => setSelectedProductId(value)}

@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, Link, Navigate } from 'react-router-dom';
 import { useAuth } from '@hooks/useAuth';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
 import { signOut } from 'firebase/auth';
@@ -8,22 +8,19 @@ import { EpimLogo } from '@components/EpimLogo';
 
 export function AdminLayout() {
 	const { isAdmin, user } = useAuth();
-	const navigate = useNavigate();
 	const { addToast } = useToast();
 
 	async function handleLogout() {
 		try {
 			await signOut(auth);
 			addToast({ title: 'Logged out successfully', type: 'success' });
-			navigate('/admin');
 		} catch {
 			addToast({ title: 'Logout failed', type: 'error' });
 		}
 	}
 
 	if (!isAdmin) {
-		navigate('/admin', { replace: true });
-		return null;
+		return <Navigate to="/admin" replace />;
 	}
 
 	return (
