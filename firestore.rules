@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'nova@moondreams.dev';
+    }
+
+    // Products collection
+    match /products/{product} {
+      // Anyone can read products (for the dropdown in the public form)
+      allow read: if true;
+      
+      // Only admin can create, update, or delete products
+      allow write: if isAdmin();
+    }
+
+    // Tickets collection
+    match /tickets/{ticket} {
+      // Anyone can create tickets (public form submission)
+      allow create: if true;
+      
+      // Only admin can read, update, or delete tickets
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

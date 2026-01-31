@@ -8,8 +8,8 @@
 }
 
 @theme app {
-	--color-background: var(--color-slate-100);
-	--color-foreground: var(--color-slate-900);
+	--color-background: var(--color-white);
+	--color-foreground: var(--color-gray-900);
 }
 
 /* Override the variables to create a dark theme */
