@@ -7,6 +7,7 @@ import { Textarea } from '@moondreamsdev/dreamer-ui/components';
 import { Select } from '@moondreamsdev/dreamer-ui/components';
 import { Checkbox } from '@moondreamsdev/dreamer-ui/components';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
+import { Label } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 
 const SUPPORT_EMAIL = 'support@moondreams.dev';
@@ -136,9 +137,7 @@ export function SubmitTicket() {
         <Card className='p-6'>
           <form onSubmit={handleSubmit} className='space-y-6'>
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Product <span className='text-destructive'>*</span>
-              </label>
+              <Label required>Product</Label>
               <Select
                 value={formData.productId}
                 onChange={(value: string) =>
@@ -150,9 +149,7 @@ export function SubmitTicket() {
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Category <span className='text-destructive'>*</span>
-              </label>
+              <Label required>Category</Label>
               <Select
                 value={formData.category}
                 onChange={(value: string) =>
@@ -167,9 +164,7 @@ export function SubmitTicket() {
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Subject <span className='text-destructive'>*</span>
-              </label>
+              <Label required>Subject</Label>
               <Input
                 type='text'
                 value={formData.subject}
@@ -182,9 +177,7 @@ export function SubmitTicket() {
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Description <span className='text-destructive'>*</span>
-              </label>
+              <Label required>Description</Label>
               <Textarea
                 value={formData.description}
                 onChange={(e) =>
@@ -197,9 +190,7 @@ export function SubmitTicket() {
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Your Name <span className='text-destructive'>*</span>
-              </label>
+              <Label required>Your Name</Label>
               <Input
                 type='text'
                 value={formData.creatorName}
@@ -212,9 +203,7 @@ export function SubmitTicket() {
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Your Email <span className='text-destructive'>*</span>
-              </label>
+              <Label required>Your Email</Label>
               <Input
                 type='email'
                 value={formData.creatorEmail}
@@ -228,14 +217,15 @@ export function SubmitTicket() {
 
             <div className='flex items-center gap-2'>
               <Checkbox
+                id='follow-up-checkbox'
                 checked={formData.followUp}
                 onCheckedChange={(checked) =>
                   setFormData({ ...formData, followUp: checked === true })
                 }
               />
-              <label className='text-sm'>
+              <Label htmlFor='follow-up-checkbox'>
                 I would like a follow-up on this ticket
-              </label>
+              </Label>
             </div>
 
             <div className='flex justify-end gap-2'>
