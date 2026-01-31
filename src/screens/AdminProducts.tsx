@@ -7,23 +7,32 @@ import {
 } from '@lib/firebase';
 import type { Product } from '@lib/firebase';
 import { Button } from '@moondreamsdev/dreamer-ui/components';
-import { Input } from '@moondreamsdev/dreamer-ui/components';
-import { Textarea } from '@moondreamsdev/dreamer-ui/components';
 import { Card } from '@moondreamsdev/dreamer-ui/components';
 import { Modal } from '@moondreamsdev/dreamer-ui/components';
+import { Form, FormFactories } from '@moondreamsdev/dreamer-ui/components';
 import { useToast } from '@moondreamsdev/dreamer-ui/hooks';
 import { useActionModal } from '@moondreamsdev/dreamer-ui/hooks';
 
 // Helper function to validate and sanitize URLs
-function isValidUrl(url: string): boolean {
-  if (!url.trim()) return true; // Empty URLs are valid (optional field)
+function validateUrl(url: string) {
+  if (!url.trim()) {
+    return { valid: true };
+  }
   
   try {
     const urlObj = new URL(url);
     // Only allow http and https protocols
-    return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    const isValid = urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    
+    return {
+      valid: isValid,
+      message: isValid ? undefined : 'Please enter a valid HTTP or HTTPS URL',
+    };
   } catch {
-    return false;
+    return {
+      valid: false,
+      message: 'Please enter a valid URL',
+    };
   }
 }
 
@@ -34,9 +43,48 @@ export function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [productName, setProductName] = useState('');
-  const [shortDescription, setShortDescription] = useState('');
-  const [siteUrl, setSiteUrl] = useState('');
+  const [formData, setFormData] = useState<{
+    name: string;
+    shortDescription: string;
+    siteUrl: string;
+  }>({
+    name: '',
+    shortDescription: '',
+    siteUrl: '',
+  });
+
+  // Define form fields using FormFactories
+  const formFields = [
+    FormFactories.input({
+      name: 'name',
+      label: 'Product Name',
+      placeholder: 'Enter product name',
+      required: true,
+      colSpan: 'full',
+      isValid: (value) => {
+        const trimmed = value.trim();
+        return {
+          valid: trimmed.length > 0,
+          message: trimmed.length > 0 ? undefined : 'Product name is required',
+        };
+      },
+    }),
+    FormFactories.textarea({
+      name: 'shortDescription',
+      label: 'Short Description',
+      placeholder: 'Enter a short description (optional)',
+      rows: 3,
+      colSpan: 'full',
+    }),
+    FormFactories.input({
+      name: 'siteUrl',
+      label: 'Site URL',
+      type: 'url',
+      placeholder: 'https://example.com (optional)',
+      colSpan: 'full',
+      isValid: validateUrl,
+    }),
+  ];
 
   const loadProducts = useCallback(async () => {
     try {
@@ -54,43 +102,25 @@ export function AdminProducts() {
     loadProducts();
   }, [loadProducts]);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    if (!productName.trim()) {
-      addToast({ title: 'Product name is required', type: 'warning' });
-      return;
-    }
-
-    // Validate URL if provided
-    if (siteUrl.trim() && !isValidUrl(siteUrl)) {
-      addToast({ 
-        title: 'Please enter a valid HTTP or HTTPS URL',
-        type: 'warning' 
-      });
-      return;
-    }
-
+  async function handleSubmit(data: typeof formData) {
     try {
       if (editingProduct?.id) {
-        await updateProduct(editingProduct.id, { 
-          name: productName,
-          shortDescription: shortDescription.trim() || undefined,
-          siteUrl: siteUrl.trim() || undefined,
+        await updateProduct(editingProduct.id, {
+          name: data.name,
+          shortDescription: data.shortDescription.trim() || undefined,
+          siteUrl: data.siteUrl.trim() || undefined,
         });
         addToast({ title: 'Product updated successfully', type: 'success' });
       } else {
-        await createProduct({ 
-          name: productName,
-          shortDescription: shortDescription.trim() || undefined,
-          siteUrl: siteUrl.trim() || undefined,
+        await createProduct({
+          name: data.name,
+          shortDescription: data.shortDescription.trim() || undefined,
+          siteUrl: data.siteUrl.trim() || undefined,
         });
         addToast({ title: 'Product created successfully', type: 'success' });
       }
       setShowModal(false);
-      setProductName('');
-      setShortDescription('');
-      setSiteUrl('');
+      setFormData({ name: '', shortDescription: '', siteUrl: '' });
       setEditingProduct(null);
       loadProducts();
     } catch {
@@ -100,9 +130,11 @@ export function AdminProducts() {
 
   function handleEdit(product: Product) {
     setEditingProduct(product);
-    setProductName(product.name);
-    setShortDescription(product.shortDescription || '');
-    setSiteUrl(product.siteUrl || '');
+    setFormData({
+      name: product.name,
+      shortDescription: product.shortDescription || '',
+      siteUrl: product.siteUrl || '',
+    });
     setShowModal(true);
   }
 
@@ -129,9 +161,7 @@ export function AdminProducts() {
 
   function handleCloseModal() {
     setShowModal(false);
-    setProductName('');
-    setShortDescription('');
-    setSiteUrl('');
+    setFormData({ name: '', shortDescription: '', siteUrl: '' });
     setEditingProduct(null);
   }
 
@@ -220,54 +250,26 @@ export function AdminProducts() {
           <h2 className='text-2xl font-bold'>
             {editingProduct ? 'Edit Product' : 'Create Product'}
           </h2>
-          <form onSubmit={handleSubmit} className='space-y-4'>
-            <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Product Name
-              </label>
-              <Input
-                type='text'
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                placeholder='Enter product name'
-                required
-              />
-            </div>
-            <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Short Description
-              </label>
-              <Textarea
-                value={shortDescription}
-                onChange={(e) => setShortDescription(e.target.value)}
-                placeholder='Enter a short description (optional)'
-                rows={3}
-              />
-            </div>
-            <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Site URL
-              </label>
-              <Input
-                type='url'
-                value={siteUrl}
-                onChange={(e) => setSiteUrl(e.target.value)}
-                placeholder='https://example.com (optional)'
-              />
-            </div>
-            <div className='flex justify-end gap-2'>
-              <Button
-                type='button'
-                variant='outline'
-                onClick={handleCloseModal}
-              >
-                Cancel
-              </Button>
-              <Button type='submit'>
-                {editingProduct ? 'Update' : 'Create'}
-              </Button>
-            </div>
-          </form>
+          <Form
+            form={formFields}
+            initialData={formData}
+            onDataChange={setFormData}
+            onSubmit={handleSubmit}
+            submitButton={
+              <div className='flex justify-end gap-2'>
+                <Button
+                  type='button'
+                  variant='outline'
+                  onClick={handleCloseModal}
+                >
+                  Cancel
+                </Button>
+                <Button type='submit'>
+                  {editingProduct ? 'Update' : 'Create'}
+                </Button>
+              </div>
+            }
+          />
         </div>
       </Modal>
     </div>
