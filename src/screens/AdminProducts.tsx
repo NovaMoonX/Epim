@@ -43,7 +43,6 @@ export function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [formKey, setFormKey] = useState(0);
   const [formData, setFormData] = useState<{
     name: string;
     shortDescription: string;
@@ -141,7 +140,6 @@ export function AdminProducts() {
       shortDescription: product.shortDescription || '',
       siteUrl: product.siteUrl || '',
     });
-    setFormKey((prev) => prev + 1);
     setShowModal(true);
   }
 
@@ -187,10 +185,7 @@ export function AdminProducts() {
           <h1 className='text-primary text-3xl font-bold'>
             Product Management
           </h1>
-          <Button onClick={() => {
-            setFormKey((prev) => prev + 1);
-            setShowModal(true);
-          }}>Create Product</Button>
+          <Button onClick={() => setShowModal(true)}>Create Product</Button>
         </div>
 
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
@@ -261,7 +256,6 @@ export function AdminProducts() {
             {editingProduct ? 'Edit Product' : 'Create Product'}
           </h2>
           <Form
-            key={formKey}
             form={formFields}
             initialData={formData}
             onDataChange={setFormData}
